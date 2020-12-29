@@ -13,8 +13,8 @@ resource "helm_release" "traefik" {
   chart            = "traefik"
 
   # If default_values == "" then apply default values from the chart if its anything else 
-  # then apply the values.yaml from the root module (values.yaml must exist)
-  values = [var.default_values == "" ? var.default_values : file("${path.root}/values.yaml")]
+  # then apply values file using the values_file input variable
+  values = [var.default_values == "" ? var.default_values : file("${path.root}/${var.values_file}")]
 
   set {
     name = "deployment.replicas"

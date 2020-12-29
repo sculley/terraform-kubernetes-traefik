@@ -84,13 +84,7 @@ $ terraform apply
 ### Custom Configuration Values
 ---
 
-If you want to use your own configuration in `values.yaml` you will need to provide the default_values input variable to the module, the terraform-kubernetes-traefik module will detect its been told not to use the default values and will look for a file called `values.yaml` in your root dir, you can see the code it uses below
-
-```yaml
-values = [var.default_values == "" ? var.default_values : file("${path.root}/values.yaml")]
-```
-
-Make sure the `values.yaml` is located in your root dir.
+If you want to use your own configuration in `values.yaml` you will need to provide the default_values input variable to the module, the `terraform-kubernetes-traefik module` will detect its been told not to use the default values and will look for a file called `values.yaml` in your root dir. If you want to use a file with a different name, for example if you want differents values per workspace/environment you can provide the input `values_file` with the name of the file you want to use, an example is below.
 
 ```
 $ tree
@@ -112,28 +106,21 @@ provider "helm" {
 module "traefik" {
   source = "github.com/sculley/terraform-kubernetes-traefik"
 
-  replica_count = 2
+  replica_count  = 2
 
   default_values = "false"
 }
 ```
 
-or add it as a variable
+If you want to use a file named other than `values.yaml` provide the input to the module like below
 
 ```hcl
-variable "default_values" {
-  description = "Specifies whether to use the traefik default values.yaml, or if set to anything else then to use your own custom values"
-  type = string
-  default = ""
+module "traefik" {
+  source         = "github.com/sculley/terraform-kubernetes-traefik"
+
+  replica_count  = 2
+
+  default_values = "false"
+  values_file    = "beta-values.yaml"
 }
-```
-
-And override the default in a .tfvars file and supply this to terraform plan/apply
-
-```
-default_values = "false"
-```
-
-```shell
-$ terraform plan --var-file=production.tfvars -out plan && terraform apply -var-file=production.tfvars plan
 ```
