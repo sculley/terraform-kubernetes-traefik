@@ -21,7 +21,7 @@ The module makes use of the [Helm Provider](https://registry.terraform.io/provid
 ```hcl
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config-elodin"
+    config_path = "~/.kube/config"
   }
 }
 ```
@@ -52,7 +52,7 @@ Paste the following configuration into ```main.tf``` and save it.
 ```hcl
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config-elodin"
+    config_path = "~/.kube/config"
   }
 }
 
